@@ -1,0 +1,1 @@
+mdb is a debugger. mdb is not meant to replace gdb or any useful debugger, it's merely a project aimed at improving my C skills and learning about how debugging works in a POSIX environment.
