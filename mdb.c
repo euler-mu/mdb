@@ -22,6 +22,7 @@ void io_handler(char *action) {
     } else{
       puts("no process running.\nto execute a process, type run arguments");
     }
+  
   } else if(strncmp(action, "run", 3) == 0) {
     if(RUNNING) {
       puts("Process already running. would you like to restart?");
@@ -45,30 +46,37 @@ void io_handler(char *action) {
 	RUNNING = TRUE;
       }
     }
+  
   } else if(check_switches(action, "registers", "rg")) {
     if(RUNNING) {
       struct user_regs_struct registers;  
       ptrace(PTRACE_GETREGS, child_pid, NULL, &registers);
       print_registers(&registers, FALSE);
-    } else { puts("no process running.\nto execute a process, type run arguments"); }
+    } else puts("no process running.\nto execute a process, type run arguments"); 
+  
+  
   } else if(check_switches(action, "step", "s")) {
     if(RUNNING)
       ptrace(PTRACE_SINGLESTEP, child_pid, NULL, NULL);
     else puts("no process running.\nto execute a process, type run arguments");
+
   } else if(check_switches(action, "forward", "f")) {
     if(RUNNING)
       ptrace(PTRACE_SYSCALL, child_pid, NULL, NULL);
     else puts("no process running.\nto execute a process, type run arguments");
+  
   } else if(strncmp(action, "pid", 3) == 0 && strlen(action) == 3) {
     if(RUNNING)
       printf("pid: %d\n", child_pid);
     else puts("no process running.\nto execute a process, type run arguments");
+  
   } else if(strncmp(action, "help", 4) == 0) {
     puts("step, s            step one instruction");
     puts("forward, f         execute until next syscall");
     puts("registers, rg      print registers");
     puts("examine address bytes      dumps memory from address to address - bytes");
     puts("pid                prints process id");
+  
   } else {
     puts("Command not recognized. Type help for more information.");
   }
@@ -106,7 +114,6 @@ int main(int argc, char **argv) {
       run(FALSE);
       break;
     case 'h':
-      puts("mdb v.0.1b (09.08.11)");
       puts("\nBasic usage:");
       puts("  -a PID, --attach PID       attach mdb to process PID");
       puts("  -r FILE, --run FILE        debug FILE");
