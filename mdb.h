@@ -36,6 +36,6 @@ static const char *sopts = "a:r:h";
 static const int action_len = 1024;
 #endif
 
-bool RUNNING;//= FALSE;
-bool ATTACHED; //= FALSE;
+bool RUNNING;
+bool ATTACHED; 
 pid_t child_pid;

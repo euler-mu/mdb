@@ -19,7 +19,7 @@ void io_handler(char *action) {
   if(check_switches(action, "step", "s")) {
     if(RUNNING){
       ptrace(PTRACE_SINGLESTEP, child_pid, NULL, NULL);
-    }    else{
+    } else{
       puts("no process running.\nto execute a process, type run arguments");
     }
   } else if(strncmp(action, "run", 3) == 0) {
@@ -32,13 +32,12 @@ void io_handler(char *action) {
       if(child_pid == 0) {
 	ptrace(PTRACE_TRACEME, 0, NULL, NULL);
 	execv(arguments.input_file, input_args);
-	if(errno == E2BIG)  {printf("ERROR: argument list exceeds system limit.\n");}
-	else if(errno == EACCES) {printf("ERROR: the specified file has a locking or sharing violation.\n");}
+	if(errno == E2BIG) { printf("ERROR: argument list exceeds system limit.\n"); }
+	else if(errno == EACCES) { printf("ERROR: the specified file has a locking or sharing violation.\n"); }
 	else if(errno == ENOENT) {
 	  printf("ERROR: file or directory not found!\n");
 	  exit(-1);
-	}
-	else if(errno == ENOMEM) {printf("ERROR: not enough memory to execute process image.\n");}
+	} else if(errno == ENOMEM) { printf("ERROR: not enough memory to execute process image.\n"); }
       } else if(child_pid < 0 ) {
 	printf("ERROR: unable to fork\n");
       } else {
@@ -65,7 +64,7 @@ void io_handler(char *action) {
       printf("pid: %d\n", child_pid);
     else puts("no process running.\nto execute a process, type run arguments");
   } else if(strncmp(action, "help", 4) == 0) {
-    puts("step,s             step one instruction");
+    puts("step, s            step one instruction");
     puts("forward, f         execute until next syscall");
     puts("registers, rg      print registers");
     puts("examine address bytes      dumps memory from address to address - bytes");
@@ -75,8 +74,9 @@ void io_handler(char *action) {
   }
 }
 
-void run() {
+void run(bool attach) {
   char *action = malloc(sizeof(char) * action_len);
+  if(attach) { ptrace(PTRACE_ATTACH, arguments.process, NULL, NULL); RUNNING = TRUE; }
   while(1) {
     printf("(mdb) ");
     getline(&action, &action_len, stdin);
@@ -99,11 +99,11 @@ int main(int argc, char **argv) {
     case 'a':
       arguments.process = atoi(optarg);
       ATTACHED = TRUE;
-      run();
+      run(ATTACHED);
       break;
     case 'r':
       arguments.input_file = optarg;
-      run();
+      run(FALSE);
       break;
     case 'h':
       puts("mdb v.0.1b (09.08.11)");
