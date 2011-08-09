@@ -1,5 +1,8 @@
 #include "mdb.h"
 
+//check_switches compares an input string with up to two different switches
+//normally used like so:
+//check_switches(input, "--long", "-l");
 bool check_switches(char *input, char *switch1, char *switch2) {
   if(input != NULL && switch1 != NULL) {
     if(switch2 == NULL) {
@@ -20,6 +23,7 @@ bool check_switches(char *input, char *switch1, char *switch2) {
   }
 }
 
+//numtokens returns the number of tokens in a tokenized string
 int numtokens(char *str) {
   int num = 0;
   char *tokens = strtok(str, " ,.");
@@ -32,6 +36,7 @@ int numtokens(char *str) {
   return num;
 }
 
+//parse_arguments creates a list of arguments for use with exec
 char **parse_arguments(char *input) {
   int numargs = numtokens(input), i = 1;
   char **args = malloc(sizeof(char) * (numargs + 1));
@@ -48,8 +53,9 @@ char **parse_arguments(char *input) {
   return args;
 }
 
+//substr creates a substring of input from the indices i with l <= i < u
 char *substr(char *input, int l, int u) {
-  if(l < strlen(input) && strlen(input) >= u && u > l) {
+  if(l < strlen(input) && strlen(input) >= u && u > l && l >= 0) {
     char *ret = malloc(sizeof(char) * (u - l));
     for(int i = 0; i < u - l; i++) {
       ret[i] = input[l + i];
