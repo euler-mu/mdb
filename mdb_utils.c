@@ -1,7 +1,6 @@
 #include "mdb.h"
 
 bool check_switches(char *input, char *switch1, char *switch2) {
-  //printf("checking %s %s %s\n", input ,switch1,switch2);
   if(input != NULL && switch1 != NULL) {
     if(switch2 == NULL) {
       if(strlen(input) == (strlen(switch1 + 1)) || strlen(input) == strlen(switch1)) {   
