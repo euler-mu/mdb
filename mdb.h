@@ -1,14 +1,18 @@
-#include <getopt.h>
 #include <sys/ptrace.h>
 #include <sys/types.h>
 #include <sys/user.h>
 #include <sys/wait.h>
+
 #include <string.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <errno.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <getopt.h>
+
+#include <readline/readline.h>
+#include <readline/history.h>
 
 #ifndef BOOL
 #define BOOL

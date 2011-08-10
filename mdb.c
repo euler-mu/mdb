@@ -54,7 +54,13 @@ void io_handler(char *action) {
       print_registers(&registers, FALSE);
     } else puts("no process running.\nto execute a process, type run arguments"); 
   
-  
+  } else if(strncmp(action, "examine", 7) == 0) {
+    if(strlen(action) > 7) {
+      
+    } else {
+      puts("usage: examine(up, down) address\nprints data in the range from [address + up, address - down]");
+    }
+
   } else if(check_switches(action, "step", "s")) {
     if(RUNNING)
       ptrace(PTRACE_SINGLESTEP, child_pid, NULL, NULL);
@@ -83,11 +89,17 @@ void io_handler(char *action) {
 }
 
 void run(bool attach) {
-  char *action = malloc(sizeof(char) * action_len);
   if(attach) { ptrace(PTRACE_ATTACH, arguments.process, NULL, NULL); RUNNING = TRUE; }
+  char* action, shell_prompt[6];
+  
   while(1) {
-    printf("(mdb) ");
-    getline(&action, &action_len, stdin);
+    snprintf(shell_prompt, sizeof(shell_prompt), "(mdb)");
+    action = readline(shell_prompt);
+    
+    if(!action)
+      break;
+
+    add_history(action);
     io_handler(action);
   }
 }
