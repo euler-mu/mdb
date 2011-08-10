@@ -90,11 +90,10 @@ void io_handler(char *action) {
 
 void run(bool attach) {
   if(attach) { ptrace(PTRACE_ATTACH, arguments.process, NULL, NULL); RUNNING = TRUE; }
-  char* action, shell_prompt[6];
+  char* action;
   
   while(1) {
-    snprintf(shell_prompt, sizeof(shell_prompt), "(mdb)");
-    action = readline(shell_prompt);
+    action = readline("(mdb)");
     
     if(!action)
       break;
