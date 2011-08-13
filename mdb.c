@@ -22,9 +22,9 @@ void io_handler(char *action) {
     } else{
       puts("no process running.\nto execute a process, type run arguments");
     }
-  
   } else if(strncmp(action, "run", 3) == 0) {
     if(RUNNING) {
+      //TODO: add process restarting
       puts("Process already running. would you like to restart?");
     } else {
       char **input_args = parse_arguments(substr(action, 4, strlen(action) - 1));
@@ -45,8 +45,7 @@ void io_handler(char *action) {
 	//successful fork
 	RUNNING = TRUE;
       }
-    }
-  
+    } 
   } else if(check_switches(action, "registers", "rg")) {
     if(RUNNING) {
       struct user_regs_struct registers;  
@@ -55,11 +54,14 @@ void io_handler(char *action) {
     } else puts("no process running.\nto execute a process, type run arguments"); 
   
   } else if(strncmp(action, "examine", 7) == 0) {
-    if(strlen(action) > 7) {
-      
-    } else {
-      puts("usage: examine(up, down) address\nprints data in the range from [address + up, address - down]");
-    }
+    if(RUNNING) {
+      //TODO: implement examining data in memory
+      if(strlen(action) > 7) {
+	
+      } else {
+	puts("usage: examine(up, down) address\nprints data in the range from [address + up, address - down]");
+      }
+    } else puts("no process running.\nto execute a process, type run arguments"); 
 
   } else if(check_switches(action, "step", "s")) {
     if(RUNNING)
@@ -69,20 +71,19 @@ void io_handler(char *action) {
   } else if(check_switches(action, "forward", "f")) {
     if(RUNNING)
       ptrace(PTRACE_SYSCALL, child_pid, NULL, NULL);
-    else puts("no process running.\nto execute a process, type run arguments");
-  
+    else puts("no process running.\nto execute a process, type run arguments");  
+
   } else if(strncmp(action, "pid", 3) == 0 && strlen(action) == 3) {
     if(RUNNING)
       printf("pid: %d\n", child_pid);
-    else puts("no process running.\nto execute a process, type run arguments");
-  
+    else puts("no process running.\nto execute a process, type run");
+
   } else if(strncmp(action, "help", 4) == 0) {
     puts("step, s            step one instruction");
     puts("forward, f         execute until next syscall");
     puts("registers, rg      print registers");
     puts("examine address bytes      dumps memory from address to address - bytes");
     puts("pid                prints process id");
-  
   } else {
     puts("Command not recognized. Type help for more information.");
   }
