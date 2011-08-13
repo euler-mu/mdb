@@ -94,10 +94,7 @@ void run(bool attach) {
   
   while(1) {
     action = readline("(mdb)");
-    
-    if(!action)
-      break;
-
+   
     add_history(action);
     io_handler(action);
   }
