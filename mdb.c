@@ -2,14 +2,14 @@
 #include "mdb_utils.h"
 
 void print_registers(struct user_regs_struct *regs, bool all) {
-  printf("rax: 0x%lx      %lu\n", (*regs).rax, (*regs).rax);
-  printf("rbx: 0x%lx      %lu\n", (*regs).rbx, (*regs).rbx);
-  printf("rcx: 0x%lx      %lu\n", (*regs).rcx, (*regs).rcx);
-  printf("rdx: 0x%lx      %lu\n", (*regs).rdx, (*regs).rdx);
-  printf("rsi: 0x%lx      %lu\n", (*regs).rsi, (*regs).rsi);
-  printf("rbp: 0x%lx      %lu\n", (*regs).rbp, (*regs).rbp);
-  printf("rip: 0x%lx      %lu\n", (*regs).rip, (*regs).rip);
-  printf("rsp: 0x%lx      %lu\n", (*regs).rsp, (*regs).rsp);
+  printf("rax: 0x%lx      %lu\n", regs->rax, regs->rax);
+  printf("rbx: 0x%lx      %lu\n", regs->rbx, regs->rbx);
+  printf("rcx: 0x%lx      %lu\n", regs->rcx, regs->rcx);
+  printf("rdx: 0x%lx      %lu\n", regs->rdx, regs->rdx);
+  printf("rsi: 0x%lx      %lu\n", regs->rsi, regs->rsi);
+  printf("rbp: 0x%lx      %lu\n", regs->rbp, regs->rbp);
+  printf("rip: 0x%lx      %lu\n", regs->rip, regs->rip);
+  printf("rsp: 0x%lx      %lu\n", regs->rsp, regs->rsp);
   if(all) {
     //print the other registers
   }
